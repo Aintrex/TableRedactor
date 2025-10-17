@@ -1,0 +1,5 @@
+setup.py
+TableRedactor.egg-info/PKG-INFO
+TableRedactor.egg-info/SOURCES.txt
+TableRedactor.egg-info/dependency_links.txt
+TableRedactor.egg-info/top_level.txt

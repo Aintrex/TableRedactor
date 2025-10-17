@@ -1,0 +1,29 @@
+# .gitignore для React/TypeScript
+
+# -----------------
+# 1. Зависимости и сборка
+# -----------------
+# Директория, куда npm устанавливает пакеты
+/node_modules
+# Результаты сборки (Vite/webpack/rollup)
+/build
+/dist
+/out
+
+# -----------------
+# 2. Файлы кэша
+# -----------------
+.cache
+.env.local
+.env.development.local
+.env.production.local
+.env.staging.local
+
+# -----------------
+# 3. IDE и другие
+# -----------------
+# Visual Studio Code
+.vscode/
+
+# MacOS
+.DS_Store

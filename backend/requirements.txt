@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+pydantic
+sqlalchemy
+psycopg2-binary  # Драйвер для PostgreSQL
+python-dotenv    # Для чтения .env
