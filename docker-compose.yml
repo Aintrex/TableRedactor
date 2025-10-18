@@ -1,5 +1,3 @@
-version: '3.12'
-
 services:
   # --- 1. PostgreSQL Database ---
   db:
