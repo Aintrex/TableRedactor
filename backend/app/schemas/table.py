@@ -11,7 +11,7 @@ class ColumnSchema(BaseModel):
     name: str = Field(..., description="Уникальное имя столбца (должно быть в нижнем регистре)")
     type: ColumnType = Field(..., description="Тип данных: text, number, timestamp, select")
     is_required: bool = Field(False, description="Обязательность заполнения")
-    options: List[str] = Field([], description="Варианты для типа 'select'")
+    options: List[str] = Field(default_factory=list, description="Варианты для типа 'select'")
 
 
 # --- Схемы для Метаданных Таблиц (без изменений) ---
@@ -19,7 +19,7 @@ class ColumnSchema(BaseModel):
 class TableBase(BaseModel):
     """Базовая схема для создания новой таблицы."""
     name: str = Field(..., description="Название таблицы")
-    description: str = Field(None, description="Описание таблицы")
+    description: Optional[str] = Field(None, description="Описание таблицы")
     columns: List[ColumnSchema] = Field(..., description="Массив с описанием столбцов")
 
 
@@ -28,9 +28,12 @@ class TableCreate(TableBase):
     pass
 
 
-class TableInDB(TableBase):
+class TableInDB(BaseModel):
     """Схема данных таблицы, возвращаемых из БД."""
     id: int = Field(..., description="Уникальный ID таблицы в системе")
+    name: str
+    description: Optional[str] = None
+    columns_json: Any
 
     class Config:
         from_attributes = True

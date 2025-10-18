@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { Box, Button, Heading, Input, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { getTableData, addRow, deleteRow } from "../api";
-import { Table } from "../type";
+import { Table as TableType } from "../type";
 
-const DataTable: React.FC<{ table: Table }> = ({ table }) => {
+const DataTable: React.FC<{ table: TableType }> = ({ table }) => {
   const [rows, setRows] = useState<any[]>([]);
   const [newRow, setNewRow] = useState<any>({});
 
   const fetchData = async () => {
     const data = await getTableData(table.id);
-    setRows(data);
+    setRows(data.rows || []);
   };
 
   useEffect(() => {
@@ -27,46 +28,51 @@ const DataTable: React.FC<{ table: Table }> = ({ table }) => {
   };
 
   return (
-    <div>
-      <h2>Таблица: {table.name}</h2>
-      <table border={1}>
-        <thead>
-          <tr>
+    <Box>
+      <Heading size="md" mb={4}>Таблица: {table.name}</Heading>
+      <Table variant="simple" size="sm">
+        <Thead>
+          <Tr>
             {table.columns.map((c) => (
-              <th key={c.name}>{c.name}</th>
+              <Th key={c.name}>{c.name}</Th>
             ))}
-            <th>Действия</th>
-          </tr>
-        </thead>
-        <tbody>
+            <Th>Действия</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
           {rows.map((row) => (
-            <tr key={row.id}>
+            <Tr key={row.id}>
               {table.columns.map((c) => (
-                <td key={c.name}>{row[c.name]}</td>
+                <Td key={c.name}>{row.data[c.name]}</Td>
               ))}
-              <td>
-                <button onClick={() => handleDelete(row.id)}>Удалить</button>
-              </td>
-            </tr>
+              <Td>
+                <Button size="sm" colorScheme="red" onClick={() => handleDelete(row.id)}>
+                  Удалить
+                </Button>
+              </Td>
+            </Tr>
           ))}
-          <tr>
+          <Tr>
             {table.columns.map((c) => (
-              <td key={c.name}>
-                <input
+              <Td key={c.name}>
+                <Input
+                  size="sm"
                   value={newRow[c.name] || ""}
                   onChange={(e) =>
                     setNewRow({ ...newRow, [c.name]: e.target.value })
                   }
                 />
-              </td>
+              </Td>
             ))}
-            <td>
-              <button onClick={handleAddRow}>Добавить</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            <Td>
+              <Button size="sm" colorScheme="green" onClick={handleAddRow}>
+                Добавить
+              </Button>
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
+    </Box>
   );
 };
 

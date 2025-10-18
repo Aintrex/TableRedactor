@@ -1,43 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { getTables, createTable } from "./api";
-import TableList from "./components/TableList";
-import CreateTableForm from "./components/CreateTableFrom";
-import DataTable from "./components/DataTable";
-import { Table } from "./type";
+import React, { useState } from "react";
+import { ChakraProvider, Box, Heading } from "@chakra-ui/react";
+import CreateTableForm from "./components/CreateTableForm";
+import TableView from "./components/TableView";
 
 const App: React.FC = () => {
-  const [tables, setTables] = useState<Table[]>([]);
-  const [selected, setSelected] = useState<Table | null>(null);
-
-  const loadTables = async () => {
-    const data = await getTables();
-    setTables(data);
-  };
-
-  useEffect(() => {
-    loadTables();
-  }, []);
+  const [tableId, setTableId] = useState<number | null>(null);
 
   return (
-    <div style={{ display: "flex", gap: "2rem", padding: "1rem" }}>
-      <div>
-        <h2>Создать таблицу</h2>
-        <CreateTableForm onCreated={loadTables} />
-      </div>
-
-      <div>
-        <h2>Список таблиц</h2>
-        <TableList tables={tables} onSelect={setSelected} />
-      </div>
-
-      <div style={{ flex: 1 }}>
-        {selected ? (
-          <DataTable table={selected} />
+    <ChakraProvider>
+      <Box p={4}>
+        <Heading mb={4}>Динамические Таблицы</Heading>
+        {!tableId ? (
+          <CreateTableForm onCreated={(id) => setTableId(id)} />
         ) : (
-          <p>Выберите таблицу слева или создайте новую.</p>
+          <TableView tableId={tableId} />
         )}
-      </div>
-    </div>
+      </Box>
+    </ChakraProvider>
   );
 };
 

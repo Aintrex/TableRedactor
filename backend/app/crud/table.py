@@ -38,7 +38,7 @@ def create_table_model(db: Session, table_data: TableCreate):
     db_table_meta = TableModel(
         name=table_data.name,
         description=table_data.description,
-        columns_json=json.dumps([col.model_dump() for col in table_data.columns])
+        columns_json=[col.model_dump() for col in table_data.columns]
     )
     db.add(db_table_meta)
 
